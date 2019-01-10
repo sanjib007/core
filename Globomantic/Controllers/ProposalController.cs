@@ -30,5 +30,20 @@ namespace Globomantic.Controllers
             ViewBag.Title = "Add Proposal";
             return View(new ProposalModel { ConferenceId = conferenceId });
         }
+
+        public async Task<IActionResult> Add(ProposalModel proposal)
+        {
+            if (ModelState.IsValid)
+                await proposalService.Add(proposal);
+            return RedirectToAction("Index", new { conferenceId = proposal.ConferenceId });
+        }
+
+
+        public async Task<IActionResult> Approve(int proposalId)
+        {
+            var proposal = await proposalService.Approve(proposalId);
+            return RedirectToAction("Index", new { conferenceId = proposal.ConferenceId });
+        }
+
     }
 }
